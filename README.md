@@ -2,15 +2,15 @@
 
 
 
-\## Integrantes
+--Integrantes--
 
-\- Nombre Apellido (correo)
+Nava Solis Carlos Damian
 
-\- Nombre Apellido (correo)
+ 21292702uagro.mx
 
 
 
-\## Objetivo
+-- Objetivo--
 
 Representar un catálogo de libros con distinta cantidad de ejemplares, ordenarlo
 
@@ -20,7 +20,7 @@ búsqueda binaria propia.
 
 
 
-\## Estructura de carpetas
+--Estructura de carpetas--
 
 \- `Biblioteca escolar-pro/`: solución y código fuente en C#
 
@@ -32,7 +32,7 @@ búsqueda binaria propia.
 
 
 
-\## Compilación y ejecución
+-- Compilación y ejecución--
 
 1\. Abrir `Biblioteca escolar-pro.slnx` en Visual Studio.
 

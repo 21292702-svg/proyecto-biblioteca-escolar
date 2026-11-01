@@ -14,36 +14,68 @@ namespace Biblioteca_escolar_pro
     {
         public class Biblioteca
         {
-            public List<Titulo> Catalogo { get; } = new List<Titulo>();
+      
+                public List<Titulo> Catalogo { get; } = new List<Titulo>();
 
-            public void CargarDatosDePrueba()
-            {
-                Catalogo.Add(new Titulo("978-0000000001", "Cien años de soledad", 5));
-                Catalogo.Add(new Titulo("978-0000000002", "El principito", 1));
-                Catalogo.Add(new Titulo("978-0000000003", "Don Quijote de la Mancha", 3));
-                Catalogo.Add(new Titulo("978-0000000004", "Rayuela", 2));
-                Catalogo.Add(new Titulo("978-0000000005", "Fahrenheit 451", 4));
-                Catalogo.Add(new Titulo("978-0000000006", "La metamorfosis", 1));
-                Catalogo.Add(new Titulo("978-0000000007", "Pedro Páramo", 5));
-                Catalogo.Add(new Titulo("978-0000000008", "El túnel", 2));
-            }
-
-            public bool VerificarSinCeldasVacias()
-            {
-                foreach (Titulo t in Catalogo)
+                public void CargarDatosDePrueba()
                 {
-                    if (t.Ejemplares == null || t.Ejemplares.Count == 0)
-                        return false;
+                    Catalogo.Add(new Titulo("978-0000000001", "Cien años de soledad", 5));
+                    Catalogo.Add(new Titulo("978-0000000002", "El principito", 1));
+                    Catalogo.Add(new Titulo("978-0000000003", "Don Quijote de la Mancha", 3));
+                    Catalogo.Add(new Titulo("978-0000000004", "Rayuela", 2));
+                    Catalogo.Add(new Titulo("978-0000000005", "Fahrenheit 451", 4));
+                    Catalogo.Add(new Titulo("978-0000000006", "La metamorfosis", 1));
+                    Catalogo.Add(new Titulo("978-0000000007", "Pedro Páramo", 5));
+                    Catalogo.Add(new Titulo("978-0000000008", "El túnel", 2));
+                }
 
-                    foreach (Ejemplar e in t.Ejemplares)
+                public bool VerificarSinCeldasVacias()
+                {
+                    foreach (Titulo t in Catalogo)
                     {
-                        if (e == null)
+                        if (t.Ejemplares == null || t.Ejemplares.Count == 0)
                             return false;
+
+                        foreach (Ejemplar e in t.Ejemplares)
+                        {
+                            if (e == null)
+                                return false;
+                        }
+                    }
+                    return true;
+                }
+
+                // Ordenamiento por inserción: préstamos de mayor a menor.
+                // Si hay empate, orden alfabético por nombre.
+                // Solo se mueve un título cuando debe ir estrictamente antes,
+                // por eso el orden relativo de los empatados se conserva (estable).
+                public void OrdenarPorPrestamosInsercion()
+                {
+                    for (int i = 1; i < Catalogo.Count; i++)
+                    {
+                        Titulo actual = Catalogo[i];
+                        int j = i - 1;
+
+                        while (j >= 0 && DebeIrAntes(actual, Catalogo[j]))
+                        {
+                            Catalogo[j + 1] = Catalogo[j];
+                            j--;
+                        }
+
+                        Catalogo[j + 1] = actual;
                     }
                 }
-                return true;
+
+                private static bool DebeIrAntes(Titulo a, Titulo b)
+                {
+                    if (a.PrestamosHistoricos != b.PrestamosHistoricos)
+                        return a.PrestamosHistoricos > b.PrestamosHistoricos;
+
+                    return string.Compare(a.Nombre, b.Nombre, StringComparison.CurrentCulture) < 0;
+                }
             }
         }
     }
-}
+
+
 

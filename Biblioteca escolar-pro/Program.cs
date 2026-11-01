@@ -6,8 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using System;
-using Biblioteca_escolar_pro;
 
 namespace Biblioteca_escolar_pro
 {
@@ -38,7 +36,18 @@ namespace Biblioteca_escolar_pro
             Console.WriteLine($"Resultado: {biblioteca.Catalogo[1].RegistrarPrestamo()}");
 
             Console.WriteLine();
-            Console.WriteLine("=== CATÁLOGO DESPUÉS DE LOS PRÉSTAMOS ===");
+            Console.WriteLine("=== PRUEBA DE ESTABILIDAD: préstamos a Pedro Páramo y El túnel ===");
+            Console.WriteLine($"Resultado: {biblioteca.Catalogo[6].RegistrarPrestamo()}");
+            Console.WriteLine($"Resultado: {biblioteca.Catalogo[7].RegistrarPrestamo()}");
+
+            Console.WriteLine();
+            Console.WriteLine("=== CATÁLOGO ANTES DEL ORDENAMIENTO ===");
+            MostrarCatalogo(biblioteca);
+
+            biblioteca.OrdenarPorPrestamosInsercion();
+
+            Console.WriteLine();
+            Console.WriteLine("=== CATÁLOGO DESPUÉS DEL ORDENAMIENTO ===");
             MostrarCatalogo(biblioteca);
 
             Console.ReadKey();

@@ -7,25 +7,56 @@ using System.Threading.Tasks;
 
 namespace Biblioteca_escolar_pro
 {
-    public class Titulo
+    namespace Biblioteca_escolar_pro
     {
-        public string Isbn { get; }
-        public string Nombre { get; }
-        public int PrestamosHistoricos { get; set; }
-        public List<Ejemplar> Ejemplares { get; }
-
-        public Titulo(string isbn, string nombre, int cantidadEjemplares)
+        public class Titulo
         {
-            Isbn = isbn;
-            Nombre = nombre;
-            PrestamosHistoricos = 0;
-            Ejemplares = new List<Ejemplar>();
+            public string Isbn { get; }
+            public string Nombre { get; }
+            public int PrestamosHistoricos { get; private set; }
+            public List<Ejemplar> Ejemplares { get; }
 
-            for (int i = 1; i <= cantidadEjemplares; i++)
+            public Titulo(string isbn, string nombre, int cantidadEjemplares)
             {
-                Ejemplares.Add(new Ejemplar(i));
+                Isbn = isbn;
+                Nombre = nombre;
+                PrestamosHistoricos = 0;
+                Ejemplares = new List<Ejemplar>();
+
+                for (int i = 1; i <= cantidadEjemplares; i++)
+                {
+                    Ejemplares.Add(new Ejemplar(i));
+                }
+            }
+
+            public int Disponibles
+            {
+                get
+                {
+                    int disponibles = 0;
+                    foreach (Ejemplar e in Ejemplares)
+                    {
+                        if (!e.Prestado)
+                            disponibles++;
+                    }
+                    return disponibles;
+                }
+            }
+
+        
+            public bool RegistrarPrestamo()
+            {
+                foreach (Ejemplar e in Ejemplares)
+                {
+                    if (!e.Prestado)
+                    {
+                        e.Prestado = true;
+                        PrestamosHistoricos++;
+                        return true;
+                    }
+                }
+                return false;
             }
         }
     }
 }
-

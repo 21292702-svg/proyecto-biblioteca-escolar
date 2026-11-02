@@ -50,6 +50,16 @@ namespace Biblioteca_escolar_pro
             Console.WriteLine("=== CATÁLOGO DESPUÉS DEL ORDENAMIENTO ===");
             MostrarCatalogo(biblioteca);
 
+            Console.WriteLine();
+            Console.WriteLine("=== BÚSQUEDA BINARIA POR ISBN ===");
+            MostrarBusquedaIsbn(biblioteca, "978-0000000005");
+            MostrarBusquedaIsbn(biblioteca, "978-0000000099");
+
+            Console.WriteLine();
+            Console.WriteLine("=== BÚSQUEDA SECUENCIAL POR TÍTULO ===");
+            MostrarBusquedaTitulo(biblioteca, "rayuela");
+            MostrarBusquedaTitulo(biblioteca, "Ulises");
+
             Console.ReadKey();
         }
 
@@ -59,6 +69,27 @@ namespace Biblioteca_escolar_pro
             {
                 Console.WriteLine($"{t.Isbn} | {t.Nombre} | ejemplares: {t.Ejemplares.Count} | disponibles: {t.Disponibles} | préstamos: {t.PrestamosHistoricos}");
             }
+        }
+
+        static void MostrarBusquedaIsbn(Biblioteca biblioteca, string isbn)
+        {
+            int comparaciones;
+            Titulo t = biblioteca.BuscarPorIsbn(isbn, out comparaciones);
+
+            if (t == null)
+                Console.WriteLine($"ISBN {isbn}: no encontrado (comparaciones: {comparaciones})");
+            else
+                Console.WriteLine($"ISBN {isbn}: {t.Nombre}, disponibles: {t.Disponibles} de {t.Ejemplares.Count} (comparaciones: {comparaciones})");
+        }
+
+        static void MostrarBusquedaTitulo(Biblioteca biblioteca, string nombre)
+        {
+            Titulo t = biblioteca.BuscarPorTitulo(nombre);
+
+            if (t == null)
+                Console.WriteLine($"Título \"{nombre}\": no encontrado");
+            else
+                Console.WriteLine($"Título \"{nombre}\": encontrado, ISBN {t.Isbn}, disponibles: {t.Disponibles} de {t.Ejemplares.Count}");
         }
     }
 }

@@ -20,43 +20,30 @@ namespace Biblioteca_escolar_pro
             MostrarCatalogo(biblioteca);
 
             Console.WriteLine();
-            Console.WriteLine("=== PRÉSTAMO 1: Cien años de soledad ===");
-            Console.WriteLine($"Resultado: {biblioteca.Catalogo[0].RegistrarPrestamo()}");
+            Console.WriteLine("=== PRÉSTAMOS ===");
+            MostrarPrestamo(biblioteca, "978-0000000001");
+            MostrarPrestamo(biblioteca, "978-0000000001");
+            MostrarPrestamo(biblioteca, "978-0000000002");
+            MostrarPrestamo(biblioteca, "978-0000000002");
+            MostrarPrestamo(biblioteca, "978-0000000099");
 
             Console.WriteLine();
-            Console.WriteLine("=== PRÉSTAMO 2: Cien años de soledad ===");
-            Console.WriteLine($"Resultado: {biblioteca.Catalogo[0].RegistrarPrestamo()}");
-
-            Console.WriteLine();
-            Console.WriteLine("=== PRÉSTAMO 3: El principito ===");
-            Console.WriteLine($"Resultado: {biblioteca.Catalogo[1].RegistrarPrestamo()}");
-
-            Console.WriteLine();
-            Console.WriteLine("=== INTENTO SIN DISPONIBILIDAD: El principito ===");
-            Console.WriteLine($"Resultado: {biblioteca.Catalogo[1].RegistrarPrestamo()}");
-
-            Console.WriteLine();
-            Console.WriteLine("=== PRUEBA DE ESTABILIDAD: préstamos a Pedro Páramo y El túnel ===");
-            Console.WriteLine($"Resultado: {biblioteca.Catalogo[6].RegistrarPrestamo()}");
-            Console.WriteLine($"Resultado: {biblioteca.Catalogo[7].RegistrarPrestamo()}");
-
-            Console.WriteLine();
-            Console.WriteLine("=== CATÁLOGO ANTES DEL ORDENAMIENTO ===");
+            Console.WriteLine("=== CATÁLOGO DESPUÉS DE LOS PRÉSTAMOS (orden original) ===");
             MostrarCatalogo(biblioteca);
 
             biblioteca.OrdenarPorPrestamosInsercion();
 
             Console.WriteLine();
-            Console.WriteLine("=== CATÁLOGO DESPUÉS DEL ORDENAMIENTO ===");
+            Console.WriteLine("=== CATÁLOGO ORDENADO POR PRÉSTAMOS ===");
             MostrarCatalogo(biblioteca);
 
             Console.WriteLine();
-            Console.WriteLine("=== BÚSQUEDA BINARIA POR ISBN ===");
+            Console.WriteLine("=== BÚSQUEDAS POR ISBN (binaria) ===");
             MostrarBusquedaIsbn(biblioteca, "978-0000000005");
             MostrarBusquedaIsbn(biblioteca, "978-0000000099");
 
             Console.WriteLine();
-            Console.WriteLine("=== BÚSQUEDA SECUENCIAL POR TÍTULO ===");
+            Console.WriteLine("=== BÚSQUEDAS POR TÍTULO (secuencial) ===");
             MostrarBusquedaTitulo(biblioteca, "rayuela");
             MostrarBusquedaTitulo(biblioteca, "Ulises");
 
@@ -69,6 +56,13 @@ namespace Biblioteca_escolar_pro
             {
                 Console.WriteLine($"{t.Isbn} | {t.Nombre} | ejemplares: {t.Ejemplares.Count} | disponibles: {t.Disponibles} | préstamos: {t.PrestamosHistoricos}");
             }
+        }
+
+        static void MostrarPrestamo(Biblioteca biblioteca, string isbn)
+        {
+            int comparaciones;
+            bool ok = biblioteca.RegistrarPrestamoPorIsbn(isbn, out comparaciones);
+            Console.WriteLine($"Préstamo ISBN {isbn}: {ok} (comparaciones: {comparaciones})");
         }
 
         static void MostrarBusquedaIsbn(Biblioteca biblioteca, string isbn)

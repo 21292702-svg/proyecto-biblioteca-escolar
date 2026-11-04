@@ -10,13 +10,13 @@ namespace Biblioteca_escolar_pro
     using System;
     using System.Collections.Generic;
 
+
     namespace Biblioteca_escolar_pro
-    { 
-    public class Biblioteca
+    {
+        public class Biblioteca
         {
             public List<Titulo> Catalogo { get; } = new List<Titulo>();
 
-            // Copia del catálogo ordenada por ISBN, usada solo por la búsqueda binaria.
             private List<Titulo> _indiceIsbn;
 
             public void CargarDatosDePrueba()
@@ -30,7 +30,6 @@ namespace Biblioteca_escolar_pro
                 Catalogo.Add(new Titulo("978-0000000007", "Pedro Páramo", 5));
                 Catalogo.Add(new Titulo("978-0000000008", "El túnel", 2));
 
-                // Si cambia el catálogo, el índice por ISBN debe reconstruirse.
                 _indiceIsbn = null;
             }
 
@@ -50,8 +49,7 @@ namespace Biblioteca_escolar_pro
                 return true;
             }
 
-            // Ordenamiento por inserción: préstamos de mayor a menor.
-            // Si hay empate, orden alfabético por nombre.
+
             public void OrdenarPorPrestamosInsercion()
             {
                 for (int i = 1; i < Catalogo.Count; i++)
@@ -77,7 +75,6 @@ namespace Biblioteca_escolar_pro
                 return string.Compare(a.Nombre, b.Nombre, StringComparison.CurrentCulture) < 0;
             }
 
-            // Crea una copia del catálogo ordenada por ISBN (ascendente) con ordenamiento por inserción.
             public List<Titulo> ObtenerCopiaOrdenadaPorIsbn()
             {
                 List<Titulo> copia = new List<Titulo>(Catalogo);
@@ -99,8 +96,6 @@ namespace Biblioteca_escolar_pro
                 return copia;
             }
 
-            // Búsqueda binaria propia por ISBN.
-            // Devuelve el título o null si no existe. comparaciones cuenta las comparaciones realizadas.
             public Titulo BuscarPorIsbn(string isbn, out int comparaciones)
             {
                 if (_indiceIsbn == null)
@@ -129,7 +124,7 @@ namespace Biblioteca_escolar_pro
                 return null;
             }
 
-            // Búsqueda secuencial por título, sin distinguir mayúsculas y minúsculas.
+     
             public Titulo BuscarPorTitulo(string nombre)
             {
                 foreach (Titulo t in Catalogo)
@@ -139,6 +134,17 @@ namespace Biblioteca_escolar_pro
                 }
 
                 return null;
+            }
+
+            
+            public bool RegistrarPrestamoPorIsbn(string isbn, out int comparaciones)
+            {
+                Titulo t = BuscarPorIsbn(isbn, out comparaciones);
+
+                if (t == null)
+                    return false;
+
+                return t.RegistrarPrestamo();
             }
         }
     }

@@ -47,6 +47,14 @@ namespace Biblioteca_escolar_pro
             MostrarBusquedaTitulo(biblioteca, "rayuela");
             MostrarBusquedaTitulo(biblioteca, "Ulises");
 
+            Console.WriteLine();
+            Console.WriteLine("=== MEDICIÓN: BÚSQUEDA BINARIA PROPIA vs Array.BinarySearch ===");
+            string[] consultas = { "978-0000000005", "978-0000000001", "978-0000000008", "978-0000000099", "978-0000000000" };
+            foreach (string isbn in consultas)
+            {
+                MostrarMedicion(biblioteca, isbn);
+            }
+
             Console.ReadKey();
         }
 
@@ -84,6 +92,20 @@ namespace Biblioteca_escolar_pro
                 Console.WriteLine($"Título \"{nombre}\": no encontrado");
             else
                 Console.WriteLine($"Título \"{nombre}\": encontrado, ISBN {t.Isbn}, disponibles: {t.Disponibles} de {t.Ejemplares.Count}");
+        }
+
+        static void MostrarMedicion(Biblioteca biblioteca, string isbn)
+        {
+            int propias;
+            Titulo tPropia = biblioteca.BuscarPorIsbn(isbn, out propias);
+
+            int verificacion;
+            Titulo tVerif = biblioteca.BuscarPorIsbnConArrayBinarySearch(isbn, out verificacion);
+
+            string resultadoPropia = tPropia == null ? "no encontrado" : "encontrado";
+            string resultadoVerif = tVerif == null ? "no encontrado" : "encontrado";
+
+            Console.WriteLine($"ISBN {isbn} | propia: {resultadoPropia}, {propias} comparaciones | Array.BinarySearch: {resultadoVerif}, {verificacion} comparaciones");
         }
     }
 }

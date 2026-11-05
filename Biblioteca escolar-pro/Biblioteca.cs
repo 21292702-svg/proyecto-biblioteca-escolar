@@ -49,7 +49,7 @@ namespace Biblioteca_escolar_pro
                 return true;
             }
 
-
+            
             public void OrdenarPorPrestamosInsercion()
             {
                 for (int i = 1; i < Catalogo.Count; i++)
@@ -96,10 +96,17 @@ namespace Biblioteca_escolar_pro
                 return copia;
             }
 
-            public Titulo BuscarPorIsbn(string isbn, out int comparaciones)
+            
+            private void AsegurarIndiceIsbn()
             {
                 if (_indiceIsbn == null)
                     _indiceIsbn = ObtenerCopiaOrdenadaPorIsbn();
+            }
+
+           
+            public Titulo BuscarPorIsbn(string isbn, out int comparaciones)
+            {
+                AsegurarIndiceIsbn();
 
                 comparaciones = 0;
                 int izquierda = 0;
@@ -124,7 +131,25 @@ namespace Biblioteca_escolar_pro
                 return null;
             }
 
-     
+        
+            public Titulo BuscarPorIsbnConArrayBinarySearch(string isbn, out int comparaciones)
+            {
+                AsegurarIndiceIsbn();
+
+                Titulo[] arreglo = _indiceIsbn.ToArray();
+                ContadorComparaciones contador = new ContadorComparaciones();
+                Titulo buscado = new Titulo(isbn, "", 0);
+
+                int posicion = Array.BinarySearch(arreglo, buscado, contador);
+                comparaciones = contador.Total;
+
+                if (posicion >= 0)
+                    return arreglo[posicion];
+
+                return null;
+            }
+
+         
             public Titulo BuscarPorTitulo(string nombre)
             {
                 foreach (Titulo t in Catalogo)
@@ -136,7 +161,6 @@ namespace Biblioteca_escolar_pro
                 return null;
             }
 
-            
             public bool RegistrarPrestamoPorIsbn(string isbn, out int comparaciones)
             {
                 Titulo t = BuscarPorIsbn(isbn, out comparaciones);
@@ -145,6 +169,18 @@ namespace Biblioteca_escolar_pro
                     return false;
 
                 return t.RegistrarPrestamo();
+            }
+
+           
+            private class ContadorComparaciones : IComparer<Titulo>
+            {
+                public int Total { get; private set; }
+
+                public int Compare(Titulo x, Titulo y)
+                {
+                    Total++;
+                    return string.CompareOrdinal(x.Isbn, y.Isbn);
+                }
             }
         }
     }
